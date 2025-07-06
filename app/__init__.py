@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv()
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -17,6 +18,12 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+
+    from .models import Usuario
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Usuario.query.get(int(user_id))
 
     from .routes import main
     app.register_blueprint(main)
