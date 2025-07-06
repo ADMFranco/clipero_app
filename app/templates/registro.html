@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Clipero</title>
+</head>
+<body>
+    <h2>Registro de Clipero</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.nombre.label }}<br>{{ form.nombre() }}</p>
+        <p>{{ form.apellido.label }}<br>{{ form.apellido() }}</p>
+        <p>{{ form.correo.label }}<br>{{ form.correo() }}</p>
+        <p>{{ form.telefono.label }}<br>{{ form.telefono() }}</p>
+        <p>{{ form.canal.label }}<br>{{ form.canal() }}</p>
+        <p>{{ form.contraseña.label }}<br>{{ form.contraseña() }}</p>
+        <p>{{ form.confirmar.label }}<br>{{ form.confirmar() }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li><strong>{{ category }}:</strong> {{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
