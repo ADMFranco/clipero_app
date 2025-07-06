@@ -13,8 +13,8 @@ def create_app():
     app = Flask(__name__)
     
     # Configuración de la app
-    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "clavepor_defecto")
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # Railway lo asignará
+    #app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "clavepor_defecto")
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # Render lo asignará
 
     db.init_app(app)
     login_manager.init_app(app)
