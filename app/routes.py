@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from .forms import RegistroForm
-from .models import Usuario
-from . import db
-from werkzeug.security import generate_password_hash
-from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.security import check_password_hash
+from .forms import EspacioForm
 from .forms import LoginForm
+from .models import Usuario
+from .models import EspacioTrabajo
+from . import db
+from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import date
 
 main = Blueprint('main', __name__)
 
@@ -55,3 +57,19 @@ def logout():
     logout_user()
     flash('Has cerrado sesión', 'info')
     return redirect(url_for('main.index'))
+
+@main.route('/crear_espacio', methods=['GET', 'POST'])
+@login_required
+def crear_espacio():
+    form = EspacioForm()
+    if form.validate_on_submit():
+        nuevo_espacio = EspacioTrabajo(
+            usuario_id=current_user.id,
+            fecha_inicio=form.fecha_inicio.data,
+            fecha_fin=form.fecha_fin.data
+        )
+        db.session.add(nuevo_espacio)
+        db.session.commit()
+        flash('Espacio de trabajo creado correctamente.', 'success')
+        return redirect(url_for('main.panel'))
+    return render_template('crear_espacio.html', form=form)

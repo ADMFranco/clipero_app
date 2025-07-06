@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+from datetime import date
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuarios'
@@ -14,3 +15,14 @@ class Usuario(db.Model, UserMixin):
 
     def __repr__(self):
         return f"<Usuario {self.nombre} {self.apellido}>"
+    
+class EspacioTrabajo(db.Model):
+    __tablename__ = 'espacio_trabajo'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    fecha_inicio = db.Column(db.Date, nullable=False)
+    fecha_fin = db.Column(db.Date, nullable=False)
+
+    def __repr__(self):
+        return f"<EspacioTrabajo {self.fecha_inicio} - {self.fecha_fin}>"
