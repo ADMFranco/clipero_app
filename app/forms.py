@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 from wtforms.validators import ValidationError
 from .models import Usuario
@@ -24,3 +24,9 @@ class EspacioForm(FlaskForm):
     fecha_inicio = DateField('Fecha de inicio', validators=[DataRequired()], format='%Y-%m-%d')
     fecha_fin = DateField('Fecha de fin', validators=[DataRequired()], format='%Y-%m-%d')
     submit = SubmitField('Crear espacio de trabajo')
+
+class ClipForm(FlaskForm):
+    titulo = StringField('Título del clip', validators=[DataRequired(), Length(min=3, max=255)])
+    url = StringField('URL del clip', validators=[DataRequired(), Length(min=10)])
+    vistas = IntegerField('Vistas del clip (opcional)', default=0)
+    submit = SubmitField('Subir clip')

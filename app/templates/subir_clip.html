@@ -1,0 +1,14 @@
+<h2>Subir nuevo clip</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.titulo.label }}<br>
+    {{ form.titulo(size=50) }}<br><br>
+
+    {{ form.url.label }}<br>
+    {{ form.url(size=50) }}<br><br>
+
+    {{ form.vistas.label }}<br>
+    {{ form.vistas() }}<br><br>
+
+    {{ form.submit() }}
+</form>

@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from .forms import RegistroForm
 from .forms import EspacioForm
 from .forms import LoginForm
+from .forms import ClipForm
 from .models import Usuario
 from .models import EspacioTrabajo
+from .models import Clip
 from . import db
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -73,3 +75,31 @@ def crear_espacio():
         flash('Espacio de trabajo creado correctamente.', 'success')
         return redirect(url_for('main.panel'))
     return render_template('crear_espacio.html', form=form)
+
+@main.route('/subir_clip', methods=['GET', 'POST'])
+@login_required
+def subir_clip():
+    form = ClipForm()
+
+    # Obtener el último espacio creado por el usuario
+    espacio = EspacioTrabajo.query.filter_by(usuario_id=current_user.id).order_by(EspacioTrabajo.id.desc()).first()
+
+    if not espacio:
+        flash('Primero debes crear un espacio de trabajo.', 'warning')
+        return redirect(url_for('main.crear_espacio'))
+
+    if form.validate_on_submit():
+        nuevo_clip = Clip(
+            titulo=form.titulo.data,
+            url=form.url.data,
+            vistas=form.vistas.data,
+            espacio_id=espacio.id,
+            usuario_id=current_user.id
+        )
+        db.session.add(nuevo_clip)
+        db.session.commit()
+        flash('Clip subido correctamente.', 'success')
+        return redirect(url_for('main.panel'))
+
+    return render_template('subir_clip.html', form=form)
+

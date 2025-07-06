@@ -26,3 +26,19 @@ class EspacioTrabajo(db.Model):
 
     def __repr__(self):
         return f"<EspacioTrabajo {self.fecha_inicio} - {self.fecha_fin}>"
+    
+class Clip(db.Model):
+    __tablename__ = 'clips'
+
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+    vistas = db.Column(db.Integer, default=0)
+    fecha_subida = db.Column(db.Date, default=date.today)
+
+    espacio_id = db.Column(db.Integer, db.ForeignKey('espacio_trabajo.id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<Clip {self.titulo}>"
+
